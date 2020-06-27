@@ -27,7 +27,7 @@ def postt(message, idom):
     api.update_status(message, idom)
     time.sleep(2)
 
-def twitter_search(keywords):
+def twitter_search(keywords,min_senti,llink):
     search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(10)
     with open("data.csv","w") as file:
         writer = csv.writer(file)    
@@ -39,10 +39,10 @@ def twitter_search(keywords):
             while i==0:
                 reply=fire.Fire(interact_model(item.text))
                 final_reply = re.sub(r"http\S+", "", reply)
-                link=" Check out https://bit.ly/2UcUNrp"
+                link=" Check out "+str(llink)
                 message="@%s I think " %(screen_name) + str(final_reply)+ str(link)
                 current_sentiment=TextBlob(message)
-                if(current_sentiment.sentiment.polarity>0):
+                if(current_sentiment.sentiment.polarity>min_senti):
                     i=1
                 else:
                     i=0  
@@ -59,7 +59,7 @@ def interact_model(
     nsamples=1,
     batch_size=1,
     length=40,
-    temperature=0.5,
+    temperature=1,
     top_k=40,
     top_p=1,
     models_dir='models',
@@ -132,7 +132,9 @@ def interact_model(
 
 if __name__ == '__main__':
     keywords = str(input('Enter terms to search in quotes: '))
+    min_senti=str(input('Enter minimum required sentiment [-1 <=> +1']))
+    llink=str(input('Enter link to attach to tweets [shortened links are advised]'))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
-    twitter_search(keywords)
+    twitter_search(keywords,min_senti,llink)
     #fire.Fire(interact_model)
 
