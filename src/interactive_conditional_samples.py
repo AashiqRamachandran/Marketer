@@ -35,7 +35,7 @@ def twitter_search(keywords):
         for item in search:
             #tweet_data=item.text
             screen_name=item.user.screen_name
-            while i=0:
+            while i==0:
                 reply=fire.Fire(interact_model(item.text))
                 final_reply = re.sub(r"http\S+", "", reply)
                 link=" Check out https://bit.ly/2UcUNrp"
@@ -58,7 +58,7 @@ def interact_model(
     nsamples=1,
     batch_size=1,
     length=40,
-    temperature=1,
+    temperature=0.5,
     top_k=40,
     top_p=1,
     models_dir='models',
