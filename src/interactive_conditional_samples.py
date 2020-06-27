@@ -35,10 +35,16 @@ def twitter_search(keywords):
         for item in search:
             #tweet_data=item.text
             screen_name=item.user.screen_name
-            reply=fire.Fire(interact_model(item.text))
-            final_reply = re.sub(r"http\S+", "", reply)
-            link=" Check out https://bit.ly/2UcUNrp"
-            message="@%s I think " %(screen_name) + str(final_reply)+ str(link)
+            while i=0:
+                reply=fire.Fire(interact_model(item.text))
+                final_reply = re.sub(r"http\S+", "", reply)
+                link=" Check out https://bit.ly/2UcUNrp"
+                message="@%s I think " %(screen_name) + str(final_reply)+ str(link)
+                current_sentimment=TextBlob(message)
+                if(current_sentiment.sentiment.polarity>0):
+                    i=1
+                else:
+                    i=0  
             postt(message, item.id)
             sentiment_overall=TextBlob(item.text)            
             print(sentiment_overall.sentiment)
