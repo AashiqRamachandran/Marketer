@@ -40,7 +40,7 @@ def twitter_search(keywords,min_senti,llink,no):
                 reply=fire.Fire(interact_model(item.text))
                 final_reply = re.sub(r"http\S+", "", reply)
                 link=" Check out "+str(llink)
-                message="@%s I think " %(screen_name) + str(final_reply)+ str(link)
+                message="@%s " %(screen_name) + str(final_reply)+ str(link)
                 current_sentiment=TextBlob(message)
                 if(current_sentiment.sentiment.polarity>min_senti):
                     i=1
