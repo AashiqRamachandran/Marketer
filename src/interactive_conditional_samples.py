@@ -27,8 +27,8 @@ def postt(message, idom):
     api.update_status(message, idom)
     time.sleep(2)
 
-def twitter_search(keywords,min_senti,llink):
-    search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(10)
+def twitter_search(keywords,min_senti,llink,no):
+    search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(no)
     with open("data.csv","w") as file:
         writer = csv.writer(file)    
         writer.writerow(["user id", "tweeted text", "replied text", "sentiment polarity", "sentiment objectivity"])
@@ -134,7 +134,9 @@ if __name__ == '__main__':
     keywords = str(input('Enter terms to search in quotes: '))
     min_senti=int(input('Enter minimum required sentiment [-1 <=> +1]'))
     llink=str(input('Enter link to attach to tweets [shortened links are advised]'))
+    no=10
+    no=int(input('Enter the number of tweets you would like to respond to. [default is 10]'))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
-    twitter_search(keywords,min_senti,llink)
+    twitter_search(keywords,min_senti,llink,no)
     #fire.Fire(interact_model)
 
