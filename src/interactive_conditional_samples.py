@@ -132,7 +132,7 @@ def interact_model(
 
 if __name__ == '__main__':
     keywords = str(input('Enter terms to search in quotes: '))
-    min_senti=str(input('Enter minimum required sentiment [-1 <=> +1]'))
+    min_senti=int(input('Enter minimum required sentiment [-1 <=> +1]'))
     llink=str(input('Enter link to attach to tweets [shortened links are advised]'))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
     twitter_search(keywords,min_senti,llink)
