@@ -33,6 +33,7 @@ def twitter_search(keywords):
         writer = csv.writer(file)    
         writer.writerow(["user id", "tweeted text", "replied text", "sentiment polarity", "sentiment objectivity"])
         for item in search:
+            i=0
             #tweet_data=item.text
             screen_name=item.user.screen_name
             while i==0:
