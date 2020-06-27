@@ -41,7 +41,7 @@ def twitter_search(keywords):
                 final_reply = re.sub(r"http\S+", "", reply)
                 link=" Check out https://bit.ly/2UcUNrp"
                 message="@%s I think " %(screen_name) + str(final_reply)+ str(link)
-                current_sentimment=TextBlob(message)
+                current_sentiment=TextBlob(message)
                 if(current_sentiment.sentiment.polarity>0):
                     i=1
                 else:
