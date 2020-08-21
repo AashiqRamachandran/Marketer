@@ -23,11 +23,11 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 global reply
 global tweet_data
 
-def postt(message, idom):
+def postt(message, idom, seconds):
     api.update_status(message, idom)
-    time.sleep(2)
+    time.sleep(seconds)
 
-def twitter_search(keywords,min_senti,llink,no):
+def twitter_search(keywords,min_senti,llink,no, seconds):
     search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(no)
     with open("data.csv","w") as file:
         writer = csv.writer(file)    
@@ -46,7 +46,7 @@ def twitter_search(keywords,min_senti,llink,no):
                     i=1
                 else:
                     i=0  
-            postt(message, item.id)
+            postt(message, item.id, seconds)
             sentiment_overall=TextBlob(item.text)            
             print(sentiment_overall.sentiment)
             writer.writerow([item.user.screen_name, item.text, message, sentiment_overall.sentiment.polarity, sentiment_overall.sentiment.subjectivity])
@@ -136,7 +136,9 @@ if __name__ == '__main__':
     llink=str(input('Enter link to attach to tweets [shortened links are advised.]'))
     no=10
     no=int(input('Enter the number of tweets you would like to respond to. [default is 10]'))
+    seconds=3600
+    seconds=int(input('Enter time between tweets in seconds [default is 3600 seconds]: ' ))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
-    twitter_search(keywords,min_senti,llink,no)
+    twitter_search(keywords,min_senti,llink,no, seconds)
     #fire.Fire(interact_model)
 
