@@ -27,7 +27,7 @@ def postt(message, idom, seconds):
     api.update_status(message, idom)
     time.sleep(seconds)
 
-def twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment):
+def twitter_search(keywords,min_senti,llink,no, seconds, min_tweet_sentiment):
     search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(no)
     with open("data.csv","w") as file:
         writer = csv.writer(file)    
@@ -35,7 +35,7 @@ def twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment):
         for item in search:
             i=0
             tweeet_sentiment=TextBlob(item.text)#module to be added later for targeting emotionally vulnerable victims
-            if(item.sentiment.polarity<=tweeet_sentiment):  
+            if(tweet_sentiment.sentiment.polarity<=min_tweeet_sentiment):  
                 #tweet_data=item.text
                 screen_name=item.user.screen_name
                 while i==0:
@@ -143,7 +143,7 @@ if __name__ == '__main__':
     seconds=3600
     seconds=int(input('Enter time between tweets in seconds [default is 3600 seconds]: ' ))
     tweet_sentiment=1
-    tweet_sentiment=input('Enter the emotional stability of a victim: [1 for all categories, 0.5 for below average, 0 for little desperate and -0.5 for desperate ')
+    min_tweet_sentiment=input('Enter the emotional stability of a victim: [1 for all categories, 0.5 for below average, 0 for little desperate and -0.5 for desperate ')
     keywords = [keyword.strip() for keyword in keywords.split(',')]
     twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment)
     #fire.Fire(interact_model)
