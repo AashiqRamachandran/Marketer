@@ -27,29 +27,33 @@ def postt(message, idom, seconds):
     api.update_status(message, idom)
     time.sleep(seconds)
 
-def twitter_search(keywords,min_senti,llink,no, seconds):
+def twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment):
     search = tweepy.Cursor(api.search, q=keywords, result_type="recent", lang="en").items(no)
     with open("data.csv","w") as file:
         writer = csv.writer(file)    
         writer.writerow(["user id", "tweeted text", "replied text", "sentiment polarity", "sentiment objectivity"])
         for item in search:
             i=0
-            #tweet_data=item.text
-            screen_name=item.user.screen_name
-            while i==0:
-                reply=fire.Fire(interact_model(item.text))
-                final_reply = re.sub(r"http\S+", "", reply)
-                link=" Check out "+str(llink)
-                message="@%s " %(screen_name) + str(final_reply)+ str(link)
-                current_sentiment=TextBlob(message)
-                if(current_sentiment.sentiment.polarity>min_senti):
-                    i=1
-                else:
-                    i=0  
-            postt(message, item.id, seconds)
-            sentiment_overall=TextBlob(item.text)            
-            print(sentiment_overall.sentiment)
-            writer.writerow([item.user.screen_name, item.text, message, sentiment_overall.sentiment.polarity, sentiment_overall.sentiment.subjectivity])
+            tweeet_sentiment=TextBlob(item.text)#module to be added later for targeting emotionally vulnerable victims
+            if(item.sentiment.polarity<=tweeet_sentiment):  
+                #tweet_data=item.text
+                screen_name=item.user.screen_name
+                while i==0:
+                    reply=fire.Fire(interact_model(item.text))
+                    final_reply = re.sub(r"http\S+", "", reply)
+                    link=" Check out "+str(llink)
+                    message="@%s " %(screen_name) + str(final_reply)+ str(link)
+                    current_sentiment=TextBlob(message)
+                    if(current_sentiment.sentiment.polarity>min_senti):
+                        i=1
+                    else:
+                       i=0  
+                postt(message, item.id, seconds)
+                sentiment_overall=TextBlob(item.text)            
+                print(sentiment_overall.sentiment)
+                writer.writerow([item.user.screen_name, item.text, message, sentiment_overall.sentiment.polarity, sentiment_overall.sentiment.subjectivity])
+            else:
+                continue
     print("End of code")
         
 def interact_model(
@@ -132,13 +136,15 @@ def interact_model(
 
 if __name__ == '__main__':
     keywords = str(input('Enter terms to search in quotes: '))
-    min_senti=int(input('Enter minimum required sentiment [-1 <=> +1]'))
+    min_senti=int(input('Enter minimum required sentiment of reply [-1 <=> +1]'))
     llink=str(input('Enter link to attach to tweets [shortened links are advised.]'))
     no=10
     no=int(input('Enter the number of tweets you would like to respond to. [default is 10]'))
     seconds=3600
     seconds=int(input('Enter time between tweets in seconds [default is 3600 seconds]: ' ))
+    tweet_sentiment=1
+    tweet_sentiment=int(input('Enter the emotional stability of a victim: [1 for all categories, 0.5 for below average, 0 for little desperate and -0.5 for desperate '))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
-    twitter_search(keywords,min_senti,llink,no, seconds)
+    twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment)
     #fire.Fire(interact_model)
 
