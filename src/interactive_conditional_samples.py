@@ -136,14 +136,14 @@ def interact_model(
 
 if __name__ == '__main__':
     keywords = str(input('Enter terms to search in quotes: '))
-    min_senti=input('Enter minimum required sentiment of reply [-1 <=> +1]')
+    min_senti=float(input('Enter minimum required sentiment of reply [-1 <=> +1]'))
     llink=str(input('Enter link to attach to tweets [shortened links are advised.]'))
     no=10
     no=int(input('Enter the number of tweets you would like to respond to. [default is 10]'))
     seconds=3600
     seconds=int(input('Enter time between tweets in seconds [default is 3600 seconds]: ' ))
     tweet_sentiment=1
-    min_tweet_sentiment=input('Enter the emotional stability of a victim: [1 for all categories, 0.5 for below average, 0 for little desperate and -0.5 for desperate ')
+    min_tweet_sentiment=float(input('Enter the emotional stability of a victim: [1 for all categories, 0.5 for below average, 0 for little desperate and -0.5 for desperate '))
     keywords = [keyword.strip() for keyword in keywords.split(',')]
     twitter_search(keywords,min_senti,llink,no, seconds, tweet_sentiment)
     #fire.Fire(interact_model)
