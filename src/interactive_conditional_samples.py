@@ -34,7 +34,7 @@ def twitter_search(keywords,min_senti,llink,no, seconds, min_tweet_sentiment):
         writer.writerow(["user id", "tweeted text", "replied text", "sentiment polarity", "sentiment objectivity"])
         for item in search:
             i=0
-            tweeet_sentiment=TextBlob(item.text)#module to be added later for targeting emotionally vulnerable victims
+            tweet_sentiment=TextBlob(item.text)#module to be added later for targeting emotionally vulnerable victims
             if(tweet_sentiment.sentiment.polarity<=min_tweeet_sentiment):  
                 #tweet_data=item.text
                 screen_name=item.user.screen_name
